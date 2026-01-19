@@ -43,3 +43,10 @@ for i in list_of_small_numbers[::-1]:
 
 for j in reversed(list_of_large_numbers):
     print(j)
+
+# the same, but usins while loop
+k = len(list_of_small_numbers) - 1
+
+while k>=0:
+    print(list_of_small_numbers[k])
+    k = k-1
