@@ -36,3 +36,10 @@ for name, value in results.items():
 
 print(f"List of small nambers: {list_of_small_numbers}")
 print(f"List of large numbers: {list_of_large_numbers}")
+
+# the new list is created, not good for big data
+for i in list_of_small_numbers[::-1]:
+    print(i)
+
+for j in reversed(list_of_large_numbers):
+    print(j)
