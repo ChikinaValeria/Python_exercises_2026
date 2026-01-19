@@ -1,4 +1,4 @@
-Python
+
 THRESHOLD = 10
 a, b = 8, -7
 
