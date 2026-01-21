@@ -2,7 +2,7 @@ import requests
 
 def download_tampere_rss(url, filename):
     try:
-        print(f"Загрузка данных с {url}...")
+        print(f"Downloading data from {url}...")
         response = requests.get(url)
 
         # Проверяем, успешно ли прошел запрос
