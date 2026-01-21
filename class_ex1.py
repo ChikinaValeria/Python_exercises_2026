@@ -5,19 +5,12 @@ def download_tampere_rss(url, filename):
         print(f"Downloading data from {url}...")
         response = requests.get(url)
 
-        # Проверяем, успешно ли прошел запрос
         response.raise_for_status()
 
         with open(filename, 'w', encoding='utf-8') as file:
             file.write(response.text)
 
         print(f"File successfully saved as: {filename}")
-
-        # Вывод атрибуции согласно лицензии CC BY 4.0
-        print("\n--- Attribution ---")
-        print("Source: Latest bulletins from the City of Tampere.")
-        print("Maintainer: Viestintäyksikkö.")
-        print("License: Creative Commons Attribution 4.0")
 
     except requests.exceptions.RequestException as e:
         print(f"Error while loading: {e}")
