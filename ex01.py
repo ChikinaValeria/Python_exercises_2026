@@ -175,8 +175,34 @@ themselves, as can be seen in the map above).
 """
 
 def neighbor_count_map(object_locations):
-    pass  # implementation here
+    width, height = 19, 9
 
+    # remove duplicates
+    objects = set(object_locations)
+
+    # create an empty map
+    grid = [['~' for _ in range(width)] for _ in range(height)]
+
+    # dictionary to store neighbor counts for each object
+    neighbor_counts = {}
+
+    for x, y in objects:
+        count = 0
+        # check all 8 neighbors around the current object
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                if dx == 0 and dy == 0:
+                    continue  # skip itself
+                nx, ny = x + dx, y + dy
+                if (nx, ny) in objects:
+                    count += 1
+        neighbor_counts[(x, y)] = count
+        grid[y][x] = str(count)
+
+    for row in grid:
+        print("".join(row))
+
+    return neighbor_counts
 
 
 """
@@ -209,7 +235,7 @@ you avoid possible penalties for unreported AI usage.)
 
 def ai_usage(query):
     what = "Chat GPT, Gemini"
-    for_what = "Questions about syntaxis, code refactoring"
+    for_what = "Syntaxis quick reminder, code refactoring"
     how = "For example I asked whether it worth checking the query variable type or not, " \
           "according to the exercise, because it sounded ambiguous for me"
 
