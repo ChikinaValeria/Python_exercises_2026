@@ -89,9 +89,33 @@ as described is returned by the function.
 
 def encode(text, alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ',
            shift=0, revlen=3, simple=False):
-    pass  # replace this "pass" by your function body implementation!
+    result = []
+    n = len(alphabet)
 
+    for char in text:
+        if char in alphabet:
+            index = alphabet.index(char)
+            new_index = (index + shift) % n
+            result.append(alphabet[new_index])
+        else:
+            # symbols not from the list
+            result.append(char)
 
+    string_result = "".join(result)
+
+    if simple:
+        return string_result
+
+    complex = []
+
+    for i in range(0, len(string_result), revlen):
+        chunk = string_result[i:i + revlen]
+        if len(chunk) == revlen:
+            complex.append(chunk[::-1])
+        else:
+            complex.append(chunk)
+
+    return "".join(complex)
 
 """
 Function neighbor_count_map
@@ -191,7 +215,9 @@ def ai_usage(query):
 
     if not isinstance(query, str):
         return None
+
     clean_query = query.strip().lower()
+
     if clean_query.startswith("what"):
         return what
     elif clean_query.startswith("for what"):
@@ -201,6 +227,6 @@ def ai_usage(query):
     else:
         return None
 
-print(ai_usage("for what?"))
+
 
 

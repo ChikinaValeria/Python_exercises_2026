@@ -1,3 +1,5 @@
+# elegant dictionnary usage to implement different answers depending on questions
+
 def ai_usage(query):
     if not isinstance(query, str):
         return None
