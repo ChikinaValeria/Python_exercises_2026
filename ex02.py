@@ -4,6 +4,7 @@ import sys
 import json
 import sqlite3
 import csv
+from collections import Counter
 
 """
 GENERAL INSTRUCTIONS
@@ -42,7 +43,7 @@ ones, if any. If you have not used AI tools, write
 to an XP penalty or, in some cases, possibly even suspicion 
 of academic fraud.)
 
-* <Used AI tools (ChatGPT) for conceptual guidance and edge-case discussion, implementation were written manually>
+* <Used AI tools (ChatGPT) for tasks' decomposition, conceptual guidance and edge-case discussion, implementation were written manually>
 
 
 Further requirements, instructions, and info in more detail:
@@ -122,16 +123,33 @@ def csv_value_count(file_name: str,
     with open(file_name, encoding = 'utf-8') as file:
         reader = csv.reader(file)
         header = next(reader)
-        index = header.index(column_name)
 
+        if column_name not in header:
+            return 0
+
+        index = header.index(column_name)
         count = 0
+
         for row in reader:
-            if int(row[index]) == search_value:
-                count += 1
+            try:
+                if isinstance(search_value, int):
+                    if int(row[index]) == search_value:
+                        count += 1
+
+                elif isinstance(search_value, float):
+                    if float(row[index]) == search_value:
+                        count += 1
+
+                else:  # string
+                    if row[index] == search_value:
+                        count += 1
+
+            except ValueError:
+                continue
 
         return count
 
-print(csv_value_count('classroom_measurements.csv', 'id', 55881))
+
 """
 Function analyze_json_from_api (max 2 XP)
 -----------------------------------------
@@ -163,8 +181,36 @@ Ensure returning the list with the values of correct types.
 """
 
 def analyze_json_from_api() -> list:
-    pass  # replace this with your implementation
+    url = "https://www.freetogame.com/api/games?platform=pc"
+    response = requests.get(url)
+    response.raise_for_status()
 
+    games = response.json()
+
+    # count games per genre
+    genre_counts = Counter(game["genre"] for game in games)
+
+    # number of different genres
+    num_genres = len(genre_counts)
+
+    # third largest genre by number of games
+    genre_list = list(genre_counts.items())
+    genre_list.sort(key=lambda x: x[1], reverse=True)
+    third_largest_genre = genre_list[2][0]
+
+    avg_games_per_genre = float(statistics.mean(genre_counts.values()))
+
+    median_games_per_genre = float(statistics.median(genre_counts.values()))
+
+    return [
+        num_genres,
+        third_largest_genre,
+        avg_games_per_genre,
+        median_games_per_genre
+    ]
+
+
+print(analyze_json_from_api())
 
 """
 Function data_from_db (max 2 XP)
