@@ -209,9 +209,6 @@ def analyze_json_from_api() -> list:
         median_games_per_genre
     ]
 
-
-print(analyze_json_from_api())
-
 """
 Function data_from_db (max 2 XP)
 --------------------------------
@@ -254,4 +251,45 @@ elements of the list are as instructed.
 """
 
 def data_from_db(db_file: str) -> list:
-    pass  # replace this with your implementation
+    conn = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+
+    # minimum humidity value from source z-02
+    cursor.execute("""
+        SELECT MIN(value)
+        FROM measurements
+        WHERE type = 'humidity' AND source = 'z-02'
+    """)
+    min_humidity = float(cursor.fetchone()[0])
+
+    # average temperature
+    cursor.execute("""
+        SELECT AVG(value)
+        FROM measurements
+        WHERE type = 'temperature'
+    """)
+    avg_temperature = float(cursor.fetchone()[0])
+
+    # number of rows
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM measurements
+    """)
+    row_count = int(cursor.fetchone()[0])
+
+    # pressure measurements before 10:43:00
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM measurements
+        WHERE type = 'pressure' AND time < '10:43:00'
+    """)
+    pressure_before_time = int(cursor.fetchone()[0])
+
+    conn.close()
+
+    return [
+        min_humidity,
+        avg_temperature,
+        row_count,
+        pressure_before_time
+    ]
