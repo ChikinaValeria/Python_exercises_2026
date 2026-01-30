@@ -123,9 +123,12 @@ def merge_stuff(data1_csv: str, data2_csv: str) -> float:
     df1 = pd.read_csv(data1_csv)
     df2 = pd.read_csv(data2_csv)
     merged_df = pd.merge(df1, df2, on=['time','location'])
+    merged_df = merged_df[["time", "location", "CO2_ppm", "temperature_C", "air_pressure_hPa", "humidity_rel_perc"]]
     print(merged_df.head(24))
     merged_df.info()
     print(merged_df.shape)
+    # df.to_csv("output.csv", index=False)
+
 
 merge_stuff('data1.csv', 'data2.csv')
 
