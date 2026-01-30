@@ -121,6 +121,7 @@ duplicate columns are not allowed.
 
 def merge_stuff(data1_csv: str, data2_csv: str) -> float:
     df1 = pd.read_csv(data1_csv)
+    # int are converted to float by pandas because of some NaN values
     df2 = pd.read_csv(data2_csv)
     merged_df = pd.merge(df1, df2, on=['time','location'])
     # set the column order
@@ -135,8 +136,7 @@ def merge_stuff(data1_csv: str, data2_csv: str) -> float:
     merged_df.dropna(subset=["humidity_rel_perc"], inplace=True)
     print(merged_df.head(24))
     print(merged_df.shape)
-
-    # df.to_csv("output.csv", index=False)
+    merged_df.to_csv("output.csv", index=False)
 
 
 merge_stuff('data1.csv', 'data2.csv')
