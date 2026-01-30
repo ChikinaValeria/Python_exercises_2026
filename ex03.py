@@ -33,7 +33,25 @@ ones, if any. If you have not used AI tools, write
 to an XP penalty or, in some cases, possibly even suspicion 
 of academic fraud.)
 
-* <REPLACE THIS LINE WITH YOUR ANSWER>
+I used ChatGPT to get step-by-step guidance and explanations on how to implement the function. 
+All the code was written by me, following the instructions and suggestions provided.
+
+Examples of my prompts:
+
+Imagine you're a Python and data processing teacher. Help me complete this task step by step. 
+Don't give direct answers in the form of function code right away.
+
+Tell me briefly about the pandas library and the concept of a DataFrame.
+
+Syntax for getting a data frame from a csv file (the file address is given).
+
+How can I see what's inside a data frame?
+
+What does this command return? The first few lines, including the header?
+
+How do I merge two data frames in pandas?
+
+What is the result of a merge? Is a new data frame created?
 
 
 Further requirements, instructions, and info in more detail:
@@ -123,21 +141,22 @@ def merge_stuff(data1_csv: str, data2_csv: str) -> float:
     df1 = pd.read_csv(data1_csv)
     # int are converted to float by pandas because of some NaN values
     df2 = pd.read_csv(data2_csv)
-    merged_df = pd.merge(df1, df2, on=['time','location'])
+
+    merged_df = pd.merge(df1, df2, on = ['time','location'])
+
     # set the column order
     merged_df = merged_df[["time", "location", "CO2_ppm", "temperature_C", "air_pressure_hPa", "humidity_rel_perc"]]
-    print(merged_df.head(24))
-    merged_df.info()
-    print(merged_df.shape)
+
     # sort by values in two columns
-    merged_df.sort_values(by=["temperature_C", "air_pressure_hPa"], inplace = True)
-    print(merged_df.head(24))
+    merged_df.sort_values(by = ["temperature_C", "air_pressure_hPa"], inplace = True)
+
     # delete lines with NaN value in column = humidity_rel_perc
-    merged_df.dropna(subset=["humidity_rel_perc"], inplace=True)
-    print(merged_df.head(24))
-    print(merged_df.shape)
-    merged_df.to_csv("output.csv", index=False)
+    merged_df.dropna(subset = ["humidity_rel_perc"], inplace = True)
 
+    # export from DataFrame to csv
+    merged_df.to_csv("output.csv", index = False)
 
-merge_stuff('data1.csv', 'data2.csv')
+    mean_value_CO2 = merged_df["CO2_ppm"].mean()
+    return mean_value_CO2
+
 
