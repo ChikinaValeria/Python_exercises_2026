@@ -127,6 +127,8 @@ def merge_stuff(data1_csv: str, data2_csv: str) -> float:
     print(merged_df.head(24))
     merged_df.info()
     print(merged_df.shape)
+    merged_df.sort_values(by=["temperature_C", "air_pressure_hPa"], inplace = True)
+    print(merged_df.head(24))
     # df.to_csv("output.csv", index=False)
 
 
